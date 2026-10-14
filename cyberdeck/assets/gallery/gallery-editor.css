@@ -1,0 +1,22 @@
+/* Editor-only tweaks: the preview is server rendered and not interactive. */
+.cd-gallery .gx-open {
+	pointer-events: none;
+}
+.cd-gallery .gx-link {
+	pointer-events: none;
+}
+.cd-gallery-placeholder .components-base-control {
+	width: 100%;
+	max-width: 520px;
+}
+.cd-gallery-check {
+	margin-top: 8px;
+	font-size: 12px;
+	line-height: 1.5;
+}
+.cd-gallery-check.is-error {
+	color: #cc1818;
+}
+.cd-gallery-check code {
+	font-size: 11px;
+}

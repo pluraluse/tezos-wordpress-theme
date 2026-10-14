@@ -1,0 +1,99 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/theme.json",
+	"version": 3,
+	"title": "Amber CRT",
+	"settings": {
+		"color": {
+			"palette": [
+				{
+					"slug": "void",
+					"name": "Void",
+					"color": "#0a0600"
+				},
+				{
+					"slug": "surface",
+					"name": "Surface",
+					"color": "#120a00"
+				},
+				{
+					"slug": "panel",
+					"name": "Panel",
+					"color": "#1a1000"
+				},
+				{
+					"slug": "line",
+					"name": "Line",
+					"color": "#3a2600"
+				},
+				{
+					"slug": "ink",
+					"name": "Text",
+					"color": "#ffd9a0"
+				},
+				{
+					"slug": "dim",
+					"name": "Dim",
+					"color": "#b08a4c"
+				},
+				{
+					"slug": "primary",
+					"name": "Primary Neon",
+					"color": "#ffb000"
+				},
+				{
+					"slug": "secondary",
+					"name": "Secondary Neon",
+					"color": "#ff6a00"
+				},
+				{
+					"slug": "accent",
+					"name": "Accent",
+					"color": "#ffe066"
+				},
+				{
+					"slug": "warn",
+					"name": "Warning",
+					"color": "#ff7a00"
+				},
+				{
+					"slug": "danger",
+					"name": "Alert",
+					"color": "#ff4d4d"
+				},
+				{
+					"slug": "violet",
+					"name": "Violet",
+					"color": "#c98f5a"
+				},
+				{
+					"slug": "strong",
+					"name": "Strong Text",
+					"color": "#fff3da"
+				}
+			]
+		}
+	},
+	"styles": {
+		"typography": {
+			"fontFamily": "var(--wp--preset--font-family--vt323)",
+			"fontSize": "1.2rem",
+			"lineHeight": "1.55"
+		},
+		"elements": {
+			"heading": {
+				"typography": {
+					"fontFamily": "var(--wp--preset--font-family--vt323)",
+					"fontWeight": "400",
+					"letterSpacing": "0"
+				}
+			},
+			"button": {
+				"typography": {
+					"fontFamily": "var(--wp--preset--font-family--vt323)",
+					"fontSize": "1.1rem",
+					"fontWeight": "400"
+				}
+			}
+		}
+	}
+}

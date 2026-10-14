@@ -1,0 +1,14 @@
+{
+	"name": "cyberdeck",
+	"version": "0.2.0",
+	"private": true,
+	"description": "Build tooling for Cyberdeck custom blocks.",
+	"scripts": {
+		"build": "wp-scripts build --blocks-manifest --webpack-copy-php --webpack-src-dir=blocks/src --output-path=blocks/build",
+		"start": "wp-scripts start --blocks-manifest --webpack-copy-php --webpack-src-dir=blocks/src --output-path=blocks/build"
+	},
+	"devDependencies": {
+		"@wordpress/scripts": "^30.0.0",
+		"@wordpress/server-side-render": "^5.0.0"
+	}
+}

@@ -1,0 +1,59 @@
+<!-- wp:template-part {"slug":"header","area":"header","tagName":"header","className":"cd-site-header"} /-->
+
+<!-- wp:group {"tagName":"main","style":{"spacing":{"margin":{"top":"var:preset|spacing|xl","bottom":"var:preset|spacing|xl"}}},"layout":{"type":"constrained"}} -->
+<main class="wp-block-group" style="margin-top:var(--wp--preset--spacing--xl);margin-bottom:var(--wp--preset--spacing--xl)">
+<!-- wp:post-featured-image {"aspectRatio":"21/9","align":"wide","className":"is-style-scanned"} /-->
+
+<!-- wp:post-title {"level":1} /-->
+
+<!-- wp:group {"layout":{"type":"flex","flexWrap":"wrap"}} -->
+<div class="wp-block-group"><!-- wp:post-date /-->
+
+<!-- wp:post-author-name {"fontSize":"xs"} /-->
+
+<!-- wp:post-terms {"term":"category"} /-->
+
+<!-- wp:post-terms {"term":"post_tag"} /--></div>
+<!-- /wp:group -->
+
+<!-- wp:post-content {"layout":{"type":"constrained"}} /-->
+
+<!-- wp:separator {"className":"is-style-dashed"} -->
+<hr class="wp-block-separator has-alpha-channel-opacity is-style-dashed"/>
+<!-- /wp:separator -->
+
+<!-- wp:group {"layout":{"type":"flex","flexWrap":"wrap","justifyContent":"space-between"}} -->
+<div class="wp-block-group"><!-- wp:post-navigation-link {"type":"previous","showTitle":true} /-->
+
+<!-- wp:post-navigation-link {"textAlign":"right","showTitle":true} /--></div>
+<!-- /wp:group -->
+
+<!-- wp:comments {"className":"cd-comments"} -->
+<div class="wp-block-comments cd-comments"><!-- wp:comments-title {"level":3} /-->
+
+<!-- wp:comment-template -->
+<!-- wp:group {"className":"is-style-neon-panel","layout":{"type":"constrained"}} -->
+<div class="wp-block-group is-style-neon-panel"><!-- wp:comment-author-name {"fontSize":"sm"} /-->
+
+<!-- wp:comment-date {"fontSize":"xs"} /-->
+
+<!-- wp:comment-content /-->
+
+<!-- wp:comment-reply-link /--></div>
+<!-- /wp:group -->
+<!-- /wp:comment-template -->
+
+<!-- wp:comments-pagination {"layout":{"type":"flex","justifyContent":"space-between"}} -->
+<!-- wp:comments-pagination-previous /-->
+
+<!-- wp:comments-pagination-numbers /-->
+
+<!-- wp:comments-pagination-next /-->
+<!-- /wp:comments-pagination -->
+
+<!-- wp:post-comments-form /--></div>
+<!-- /wp:comments -->
+</main>
+<!-- /wp:group -->
+
+<!-- wp:template-part {"slug":"footer","area":"footer","tagName":"footer"} /-->

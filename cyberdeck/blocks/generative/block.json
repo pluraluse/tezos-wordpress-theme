@@ -1,0 +1,157 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "cyberdeck/generative",
+	"version": "0.1.0",
+	"title": "Generative Canvas",
+	"category": "design",
+	"icon": "art",
+	"description": "Seeded generative art drawn live behind your content, or one of your own already-minted generative works from Teia, objkt or Mederu shown live. Runs only while on screen, honors reduced motion, and takes its colors from the theme.",
+	"keywords": [
+		"generative",
+		"canvas",
+		"algorithmic",
+		"background",
+		"animation",
+		"art",
+		"seed",
+		"backdrop"
+	],
+	"textdomain": "cyberdeck",
+	"attributes": {
+		"sketch": {
+			"type": "string",
+			"default": "flow"
+		},
+		"seed": {
+			"type": "string",
+			"default": "cyberdeck"
+		},
+		"palette": {
+			"type": "string",
+			"enum": [
+				"theme",
+				"duo",
+				"primary",
+				"mono"
+			],
+			"default": "theme"
+		},
+		"density": {
+			"type": "number",
+			"default": 5
+		},
+		"speed": {
+			"type": "number",
+			"default": 1
+		},
+		"interactive": {
+			"type": "boolean",
+			"default": true
+		},
+		"background": {
+			"type": "string",
+			"enum": [
+				"void",
+				"transparent"
+			],
+			"default": "void"
+		},
+		"mode": {
+			"type": "string",
+			"enum": [
+				"section",
+				"fixed"
+			],
+			"default": "section"
+		},
+		"minHeight": {
+			"type": "number",
+			"default": 70
+		},
+		"dim": {
+			"type": "number",
+			"default": 25
+		},
+		"fps": {
+			"type": "number",
+			"default": 30
+		},
+		"source": {
+			"type": "string",
+			"enum": [
+				"sketch",
+				"minted"
+			],
+			"default": "sketch"
+		},
+		"mintFrom": {
+			"type": "string",
+			"enum": [
+				"teia",
+				"objkt",
+				"mederu"
+			],
+			"default": "teia"
+		},
+		"mintAddress": {
+			"type": "string",
+			"default": ""
+		},
+		"mintWork": {
+			"type": "string",
+			"default": ""
+		},
+		"mintScope": {
+			"type": "string",
+			"enum": [
+				"native",
+				"any"
+			],
+			"default": "native"
+		},
+		"mintPick": {
+			"type": "string",
+			"enum": [
+				"seeded",
+				"newest"
+			],
+			"default": "seeded"
+		},
+		"mintLive": {
+			"type": "boolean",
+			"default": true
+		},
+		"mintInteractive": {
+			"type": "boolean",
+			"default": false
+		},
+		"showCredit": {
+			"type": "boolean",
+			"default": true
+		}
+	},
+	"supports": {
+		"html": false,
+		"anchor": true,
+		"align": [
+			"wide",
+			"full"
+		],
+		"color": {
+			"text": true,
+			"background": false
+		},
+		"spacing": {
+			"margin": true
+		},
+		"typography": {
+			"fontSize": true
+		}
+	},
+	"render": "file:./render.php",
+	"editorScript": "file:./index.js",
+	"editorStyle": "cyberdeck-generative-editor",
+	"style": "cyberdeck-generative",
+	"viewScript": "cyberdeck-generative-view"
+}

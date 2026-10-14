@@ -1,0 +1,252 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "cyberdeck/mederu-profile",
+	"version": "0.1.0",
+	"title": "Mederu Profile",
+	"category": "cyberdeck-web3",
+	"icon": "art",
+	"description": "Show works from mederu.art artists (or collectors) as a grid, masonry, marquee, carousel, list, feed or single piece. Works can be one or many accounts, only those minted on Mederu, with material credits. Video, audio, GIF, 3D (GLB) and interactive works load only when clicked.",
+	"keywords": [
+		"mederu",
+		"tezos",
+		"nft",
+		"gacha",
+		"atelier",
+		"artist",
+		"gallery",
+		"glb",
+		"marquee",
+		"objkt"
+	],
+	"textdomain": "cyberdeck",
+	"attributes": {
+		"address": {
+			"type": "string",
+			"default": ""
+		},
+		"source": {
+			"type": "string",
+			"enum": [
+				"created",
+				"studio",
+				"collected"
+			],
+			"default": "created"
+		},
+		"layout": {
+			"type": "string",
+			"enum": [
+				"grid",
+				"masonry",
+				"mosaic",
+				"marquee",
+				"carousel",
+				"spotlight",
+				"list",
+				"feed",
+				"single"
+			],
+			"default": "feed"
+		},
+		"limit": {
+			"type": "number",
+			"default": 12
+		},
+		"order": {
+			"type": "string",
+			"enum": [
+				"newest",
+				"oldest",
+				"random"
+			],
+			"default": "newest"
+		},
+		"types": {
+			"type": "array",
+			"items": {
+				"type": "string"
+			},
+			"default": [
+				"image",
+				"gif",
+				"video",
+				"audio",
+				"model",
+				"interactive",
+				"other"
+			]
+		},
+		"tokenId": {
+			"type": "string",
+			"default": ""
+		},
+		"contract": {
+			"type": "string",
+			"default": ""
+		},
+		"columns": {
+			"type": "number",
+			"default": 3
+		},
+		"gap": {
+			"type": "number",
+			"default": 16
+		},
+		"aspect": {
+			"type": "string",
+			"default": "auto"
+		},
+		"fit": {
+			"type": "string",
+			"enum": [
+				"cover",
+				"contain"
+			],
+			"default": "cover"
+		},
+		"itemSize": {
+			"type": "number",
+			"default": 220
+		},
+		"showProfile": {
+			"type": "boolean",
+			"default": true
+		},
+		"profileName": {
+			"type": "string",
+			"default": ""
+		},
+		"profileBio": {
+			"type": "string",
+			"default": ""
+		},
+		"showTitle": {
+			"type": "boolean",
+			"default": true
+		},
+		"showMeta": {
+			"type": "boolean",
+			"default": false
+		},
+		"showBadges": {
+			"type": "boolean",
+			"default": true
+		},
+		"showLink": {
+			"type": "boolean",
+			"default": true
+		},
+		"interaction": {
+			"type": "string",
+			"enum": [
+				"lightbox",
+				"inline",
+				"page"
+			],
+			"default": "lightbox"
+		},
+		"maxActive": {
+			"type": "number",
+			"default": 1
+		},
+		"gateway": {
+			"type": "string",
+			"default": "teia"
+		},
+		"cacheMinutes": {
+			"type": "number",
+			"default": 30
+		},
+		"speed": {
+			"type": "number",
+			"default": 40
+		},
+		"direction": {
+			"type": "string",
+			"enum": [
+				"left",
+				"right"
+			],
+			"default": "left"
+		},
+		"pauseOnHover": {
+			"type": "boolean",
+			"default": true
+		},
+		"showCredits": {
+			"type": "boolean",
+			"default": false
+		},
+		"includeFlagged": {
+			"type": "boolean",
+			"default": false
+		},
+		"allowCollect": {
+			"type": "boolean",
+			"default": false
+		},
+		"showPrice": {
+			"type": "boolean",
+			"default": false
+		},
+		"interval": {
+			"type": "number",
+			"default": 5
+		},
+		"tilt": {
+			"type": "boolean",
+			"default": false
+		},
+		"scope": {
+			"type": "string",
+			"enum": [
+				"native",
+				"any"
+			],
+			"default": "native"
+		},
+		"contracts": {
+			"type": "string",
+			"default": ""
+		},
+		"works": {
+			"type": "string",
+			"default": ""
+		}
+	},
+	"supports": {
+		"html": false,
+		"anchor": true,
+		"align": [
+			"wide",
+			"full"
+		],
+		"color": {
+			"background": true,
+			"text": true,
+			"link": true
+		},
+		"spacing": {
+			"margin": true,
+			"padding": true
+		},
+		"typography": {
+			"fontSize": true
+		},
+		"__experimentalBorder": {
+			"color": true,
+			"radius": true,
+			"style": true,
+			"width": true
+		}
+	},
+	"render": "file:./render.php",
+	"editorScript": [
+		"cyberdeck-gallery-editor",
+		"file:./index.js"
+	],
+	"editorStyle": "cyberdeck-gallery-editor",
+	"style": "cyberdeck-gallery",
+	"viewScript": "cyberdeck-gallery-view"
+}

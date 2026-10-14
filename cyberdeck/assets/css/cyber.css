@@ -1,0 +1,504 @@
+/*
+ * Cyberdeck: effects, block style variations, utility classes.
+ * Loaded on the front end and inside the editor canvas.
+ * Colors come from theme.json presets, so style variations and
+ * Site Editor color changes flow through automatically.
+ *
+ * Tweak intensity from Site Editor > Styles > Additional CSS, e.g.
+ *   :root { --wp--custom--effects--scanline-opacity: 0; }   (turn scanlines off)
+ *   :root { --wp--custom--effects--grid-strength: 0%; }     (turn the grid off)
+ */
+
+:root,
+body {
+	--cd-primary: var(--wp--preset--color--primary);
+	--cd-secondary: var(--wp--preset--color--secondary);
+	--cd-accent: var(--wp--preset--color--accent);
+	--cd-warn: var(--wp--preset--color--warn);
+	--cd-danger: var(--wp--preset--color--danger);
+	--cd-void: var(--wp--preset--color--void);
+	--cd-surface: var(--wp--preset--color--surface);
+	--cd-panel: var(--wp--preset--color--panel);
+	--cd-line: var(--wp--preset--color--line);
+	--cd-text: var(--wp--preset--color--ink);
+	--cd-dim: var(--wp--preset--color--dim);
+	--cd-glow: var(--wp--custom--effects--glow-strength, 40%);
+	--cd-grid-size: var(--wp--custom--effects--grid-size, 32px);
+	--cd-grid-strength: var(--wp--custom--effects--grid-strength, 6%);
+	--cd-ease: cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+/* ---------- Page atmosphere ---------- */
+
+body {
+	background-image:
+		linear-gradient(color-mix(in srgb, var(--cd-primary) var(--cd-grid-strength), transparent) 1px, transparent 1px),
+		linear-gradient(90deg, color-mix(in srgb, var(--cd-primary) var(--cd-grid-strength), transparent) 1px, transparent 1px);
+	background-size: var(--cd-grid-size) var(--cd-grid-size);
+	background-attachment: fixed;
+}
+
+/* Scanlines: front end only, so they never get in the way of editing. */
+body:not(.editor-styles-wrapper)::after {
+	content: "";
+	position: fixed;
+	inset: 0;
+	z-index: 9999;
+	pointer-events: none;
+	background: repeating-linear-gradient(to bottom, var(--cd-primary) 0 1px, transparent 1px 3px);
+	opacity: var(--wp--custom--effects--scanline-opacity, 0.05);
+}
+
+html {
+	scrollbar-color: var(--cd-primary) var(--cd-void);
+}
+
+::selection {
+	background: var(--cd-secondary);
+	color: var(--cd-void);
+}
+
+:where(a, button, input, textarea, select, summary):focus-visible {
+	outline: 2px dashed var(--cd-accent);
+	outline-offset: 3px;
+}
+
+/* ---------- Header / footer chrome ---------- */
+
+/* Sticky is applied to the template-part wrapper (its parent is the full page height). */
+.cd-site-header {
+	position: sticky;
+	top: 0;
+	z-index: 100;
+}
+.admin-bar .cd-site-header {
+	top: 32px;
+}
+@media (max-width: 782px) {
+	.admin-bar .cd-site-header {
+		top: 46px;
+	}
+}
+
+.cd-header {
+	background: color-mix(in srgb, var(--cd-surface) 88%, transparent) !important;
+	backdrop-filter: blur(10px);
+}
+
+.cd-line-b {
+	border-bottom: 1px solid var(--cd-line);
+}
+.cd-line-t {
+	border-top: 1px solid var(--cd-line);
+}
+
+.cd-statusbar {
+	background: var(--cd-void);
+	border-bottom: 1px solid var(--cd-line);
+	letter-spacing: 0.1em;
+}
+.cd-statusbar > .wp-block-group {
+	padding-block: 0.3rem;
+}
+.cd-statusbar p {
+	margin: 0;
+}
+
+.cd-square {
+	aspect-ratio: 1;
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-end;
+}
+
+/* ---------- Group styles ---------- */
+
+.is-style-neon-panel {
+	background: var(--cd-panel);
+	border: 1px solid var(--cd-line);
+	padding: var(--wp--preset--spacing--md);
+	transition: border-color 160ms var(--cd-ease), box-shadow 160ms var(--cd-ease);
+}
+.wp-block-post-template .is-style-neon-panel:hover,
+a:hover > .is-style-neon-panel {
+	border-color: var(--cd-primary);
+	box-shadow: var(--wp--preset--shadow--glow-sm);
+}
+
+.is-style-terminal-window {
+	--cd-pad: var(--wp--preset--spacing--md);
+	background: var(--cd-panel);
+	border: 1px solid var(--cd-line);
+	padding: 0 var(--cd-pad) var(--cd-pad);
+	overflow: hidden;
+}
+.is-style-terminal-window::before {
+	content: "";
+	display: block;
+	height: 2.4rem;
+	margin: 0 calc(var(--cd-pad) * -1) var(--cd-pad);
+	border-bottom: 1px solid var(--cd-line);
+	background:
+		radial-gradient(circle at 20px 50%, var(--cd-danger) 0 4px, transparent 5px),
+		radial-gradient(circle at 38px 50%, var(--cd-warn) 0 4px, transparent 5px),
+		radial-gradient(circle at 56px 50%, var(--cd-accent) 0 4px, transparent 5px),
+		var(--cd-surface);
+}
+
+.is-style-grid-backdrop {
+	background-image:
+		linear-gradient(color-mix(in srgb, var(--cd-primary) 14%, transparent) 1px, transparent 1px),
+		linear-gradient(90deg, color-mix(in srgb, var(--cd-primary) 14%, transparent) 1px, transparent 1px),
+		var(--wp--preset--gradient--halo);
+	background-size: 40px 40px, 40px 40px, 100% 100%;
+	background-position: center top;
+}
+
+.is-style-crt,
+.wp-block-cover.is-style-crt {
+	position: relative;
+	overflow: hidden;
+	border: 1px solid var(--cd-line);
+	border-radius: 18px / 14px;
+	box-shadow: inset 0 0 120px rgb(0 0 0 / 0.7), 0 0 0 1px color-mix(in srgb, var(--cd-primary) 25%, transparent);
+	text-shadow: 0 0 6px color-mix(in srgb, currentColor 45%, transparent);
+}
+.is-style-crt:not(.wp-block-cover) {
+	padding: var(--wp--preset--spacing--md);
+}
+.is-style-crt::after {
+	content: "";
+	position: absolute;
+	inset: 0;
+	pointer-events: none;
+	background:
+		repeating-linear-gradient(to bottom, rgb(0 0 0 / 0.28) 0 1px, transparent 1px 3px),
+		radial-gradient(ellipse at center, transparent 55%, rgb(0 0 0 / 0.55) 100%);
+	animation: cd-flicker 6s infinite steps(1);
+}
+
+.is-style-corner-brackets {
+	position: relative;
+	padding: var(--wp--preset--spacing--md);
+}
+.is-style-corner-brackets::after,
+.wp-block-image.is-style-corner-brackets::after,
+.wp-block-post-featured-image.is-style-corner-brackets::after {
+	content: "";
+	position: absolute;
+	inset: 6px;
+	pointer-events: none;
+	--b: var(--cd-primary);
+	background:
+		linear-gradient(var(--b), var(--b)) top left / 18px 2px no-repeat,
+		linear-gradient(var(--b), var(--b)) top left / 2px 18px no-repeat,
+		linear-gradient(var(--b), var(--b)) top right / 18px 2px no-repeat,
+		linear-gradient(var(--b), var(--b)) top right / 2px 18px no-repeat,
+		linear-gradient(var(--b), var(--b)) bottom left / 18px 2px no-repeat,
+		linear-gradient(var(--b), var(--b)) bottom left / 2px 18px no-repeat,
+		linear-gradient(var(--b), var(--b)) bottom right / 18px 2px no-repeat,
+		linear-gradient(var(--b), var(--b)) bottom right / 2px 18px no-repeat;
+}
+.wp-block-image.is-style-corner-brackets,
+.wp-block-post-featured-image.is-style-corner-brackets {
+	position: relative;
+	padding: 0;
+}
+
+/* ---------- Image styles ---------- */
+
+.wp-block-image.is-style-scanned,
+.wp-block-post-featured-image.is-style-scanned {
+	position: relative;
+}
+.wp-block-image.is-style-scanned img,
+.wp-block-post-featured-image.is-style-scanned img {
+	filter: contrast(1.1) saturate(0.85);
+}
+.wp-block-image.is-style-scanned::after,
+.wp-block-post-featured-image.is-style-scanned::after {
+	content: "";
+	position: absolute;
+	inset: 0;
+	pointer-events: none;
+	background: repeating-linear-gradient(to bottom, rgb(0 0 0 / 0.3) 0 1px, transparent 1px 3px);
+	mix-blend-mode: multiply;
+}
+
+/* ---------- Heading / text styles ---------- */
+
+.is-style-glitch {
+	animation: cd-glitch 5s infinite steps(1);
+}
+.is-style-neon {
+	text-shadow:
+		0 0 0.5em color-mix(in srgb, currentColor var(--cd-glow), transparent),
+		0 0 0.15em color-mix(in srgb, currentColor 60%, transparent);
+}
+
+.wp-block-heading.is-style-prompt::before {
+	content: "> ";
+	color: var(--cd-primary);
+}
+.wp-block-heading.is-style-prompt::after {
+	content: "_";
+	color: var(--cd-primary);
+	animation: cd-blink 1.1s steps(1) infinite;
+}
+
+.wp-block-site-title.is-style-prompt a::before {
+	content: "~/";
+	color: var(--cd-primary);
+	margin-right: 0.15em;
+}
+.wp-block-site-title.is-style-prompt a::after {
+	content: "_";
+	color: var(--cd-primary);
+	animation: cd-blink 1.1s steps(1) infinite;
+}
+
+p.is-style-typewriter {
+	animation: cd-type 2.4s steps(48, end) both;
+}
+p.is-style-comment {
+	color: var(--cd-dim);
+}
+p.is-style-comment::before {
+	content: "// ";
+}
+
+/* ---------- Button / list / quote / separator styles ---------- */
+
+.wp-block-button.is-style-outline > .wp-block-button__link:not(.has-text-color) {
+	color: var(--cd-primary);
+}
+.wp-block-button.is-style-outline > .wp-block-button__link:not(.has-background) {
+	background: transparent;
+	box-shadow: none;
+}
+.wp-block-button.is-style-outline > .wp-block-button__link:not(.has-background):hover {
+	background: color-mix(in srgb, var(--cd-primary) 12%, transparent);
+	box-shadow: var(--wp--preset--shadow--glow-sm);
+}
+
+.wp-block-button.is-style-ghost > .wp-block-button__link:not(.has-background) {
+	background: transparent;
+	box-shadow: none;
+	padding-inline: 0;
+}
+.wp-block-button.is-style-ghost > .wp-block-button__link:not(.has-text-color) {
+	color: var(--cd-text);
+}
+.wp-block-button.is-style-ghost > .wp-block-button__link::before {
+	content: "> ";
+	color: var(--cd-primary);
+}
+.wp-block-button.is-style-ghost > .wp-block-button__link:hover {
+	color: var(--cd-primary);
+}
+
+.wp-block-quote.is-style-log-entry {
+	background: var(--cd-panel);
+	border-left-color: var(--cd-primary);
+	padding: var(--wp--preset--spacing--sm) var(--wp--preset--spacing--md);
+}
+.wp-block-quote.is-style-log-entry::before {
+	content: "[log]";
+	display: block;
+	margin-bottom: 0.4em;
+	color: var(--cd-dim);
+	font-size: var(--wp--preset--font-size--xs);
+}
+
+ul.is-style-chevrons {
+	list-style: none;
+	padding-left: 0;
+}
+ul.is-style-chevrons > li {
+	position: relative;
+	padding-left: 1.5em;
+}
+ul.is-style-chevrons > li::before {
+	content: ">";
+	position: absolute;
+	left: 0;
+	color: var(--cd-primary);
+}
+
+.wp-block-separator.is-style-dashed {
+	background: none;
+	height: 0;
+	border: 0;
+	border-top: 1px dashed currentColor;
+}
+
+/* ---------- Form fields, tables, inline code ---------- */
+
+.wp-block-search__input,
+:where(.wp-block-post-comments-form, .comment-respond) :where(input[type="text"], input[type="email"], input[type="url"], textarea) {
+	background: var(--cd-surface);
+	color: var(--cd-text);
+	border: 1px solid var(--cd-line);
+	border-radius: 0;
+	font-family: inherit;
+	padding: 0.7em 1em;
+}
+.wp-block-search__input:focus {
+	border-color: var(--cd-primary);
+	outline-offset: 0;
+}
+
+.wp-block-table table {
+	border-collapse: collapse;
+}
+.wp-block-table :is(td, th) {
+	border: 1px solid var(--cd-line);
+	padding: 0.6em 0.9em;
+}
+.wp-block-table thead {
+	background: var(--cd-panel);
+	border-bottom: 2px solid var(--cd-primary);
+}
+
+:not(pre) > code {
+	color: var(--cd-accent);
+	background: var(--cd-panel);
+	border: 1px solid var(--cd-line);
+	padding: 0.1em 0.4em;
+	font-size: 0.92em;
+}
+
+/* ---------- Utility classes (Advanced > Additional CSS class(es)) ---------- */
+
+.cd-glow {
+	box-shadow: var(--wp--preset--shadow--glow);
+}
+.cd-glow-text {
+	text-shadow:
+		0 0 0.5em color-mix(in srgb, currentColor var(--cd-glow), transparent),
+		0 0 0.15em color-mix(in srgb, currentColor 60%, transparent);
+}
+.cd-flicker {
+	animation: cd-flicker 4s infinite steps(1);
+}
+.cd-blink {
+	animation: cd-blink 1.1s steps(1) infinite;
+}
+.cd-border {
+	border: 1px solid var(--cd-line);
+}
+.cd-border-neon {
+	border: 1px solid var(--cd-primary);
+}
+.cd-uppercase {
+	text-transform: uppercase;
+	letter-spacing: 0.1em;
+}
+
+/* ---------- Motion ---------- */
+
+@keyframes cd-blink {
+	50% {
+		opacity: 0;
+	}
+}
+@keyframes cd-flicker {
+	0%, 94%, 100% {
+		opacity: 1;
+	}
+	95% {
+		opacity: 0.86;
+	}
+	97% {
+		opacity: 0.96;
+	}
+}
+@keyframes cd-glitch {
+	0%, 92%, 100% {
+		text-shadow: none;
+		transform: none;
+	}
+	93% {
+		text-shadow: 3px 0 var(--cd-secondary), -3px 0 var(--cd-primary);
+		transform: translateX(2px);
+	}
+	95% {
+		text-shadow: -4px 0 var(--cd-secondary), 4px 0 var(--cd-primary);
+		transform: translateX(-2px) skewX(-3deg);
+	}
+	97% {
+		text-shadow: 2px 1px var(--cd-secondary), -2px -1px var(--cd-primary);
+		transform: none;
+	}
+}
+@keyframes cd-type {
+	from {
+		clip-path: inset(0 100% 0 0);
+	}
+	to {
+		clip-path: inset(0 0 0 0);
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	*,
+	*::before,
+	*::after {
+		animation: none !important;
+		transition: none !important;
+	}
+}
+
+@media print {
+	body::after {
+		display: none;
+	}
+}
+
+/* ---------- Future-friendly touches ---------- */
+
+:root {
+	color-scheme: dark;
+}
+:where(h1, h2, h3) {
+	text-wrap: balance;
+}
+:where(p, li, figcaption) {
+	text-wrap: pretty;
+}
+
+/* Cross-page fade/morph in browsers that support view transitions (progressive enhancement). */
+@media (prefers-reduced-motion: no-preference) {
+	@view-transition {
+		navigation: auto;
+	}
+	.cd-site-header {
+		view-transition-name: cd-site-header;
+	}
+	::view-transition-old(root),
+	::view-transition-new(root) {
+		animation-duration: 260ms;
+	}
+}
+
+/* Scroll-linked reveal: add the class "cd-reveal" to any block (Advanced > Additional CSS class). */
+@supports (animation-timeline: view()) {
+	@media (prefers-reduced-motion: no-preference) {
+		.cd-reveal,
+		.cd-reveal-group > * {
+			animation: cd-reveal linear both;
+			animation-timeline: view();
+			animation-range: entry 4% cover 26%;
+		}
+	}
+}
+@keyframes cd-reveal {
+	from {
+		opacity: 0;
+		transform: translateY(26px) scale(0.985);
+	}
+	to {
+		opacity: 1;
+		transform: none;
+	}
+}

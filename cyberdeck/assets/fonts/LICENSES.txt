@@ -1,0 +1,10 @@
+Bundled fonts (latin subset, via Fontsource), all licensed under the SIL Open Font License 1.1
+https://openfontlicense.org
+
+- JetBrains Mono: Copyright 2020 The JetBrains Mono Project Authors
+- Space Mono: Copyright 2016 The Space Mono Project Authors
+- Share Tech Mono: Copyright 2012 Carrois Apps Ltd
+- VT323: Copyright 2011 The VT323 Project Authors
+
+To add more characters (Cyrillic, Greek, etc.) grab the matching subset files from
+https://fontsource.org and add a second "src" entry to the font face in theme.json.
