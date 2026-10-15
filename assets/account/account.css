@@ -1,0 +1,102 @@
+/* Tezos Account block. Uses theme presets with dark fallbacks. */
+.cd-acct {
+	--cd-primary: var(--wp--preset--color--primary, #00e5ff);
+	--cd-panel: var(--wp--preset--color--panel, #101626);
+	--cd-line: var(--wp--preset--color--line, #1f2a47);
+	--cd-dim: var(--wp--preset--color--dim, #8593b0);
+}
+.cd-acct.is-layout-card {
+	padding: var(--wp--preset--spacing--md, 1.5rem);
+	background: var(--cd-panel);
+	border: 1px solid var(--cd-line);
+}
+.cd-acct__head {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: baseline;
+	gap: 0.25rem 1rem;
+	margin-bottom: 1rem;
+}
+.cd-acct__name {
+	margin: 0;
+	overflow-wrap: anywhere;
+}
+.cd-acct__addr {
+	color: var(--cd-dim);
+	font-size: 0.78rem;
+	background: none;
+	border: 0;
+	padding: 0;
+}
+.cd-acct__stats {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+	gap: 0.75rem;
+	margin: 0 0 1rem;
+}
+.cd-acct__stat {
+	padding: 0.6rem 0.75rem;
+	border: 1px solid var(--cd-line);
+	background: color-mix(in srgb, var(--wp--preset--color--void, #06070d) 55%, transparent);
+}
+.cd-acct__stat dt,
+.cd-acct__k {
+	margin: 0;
+	color: var(--cd-dim);
+	font-size: 0.7rem;
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+}
+.cd-acct__stat dd {
+	margin: 0.15rem 0 0;
+	color: var(--cd-primary);
+	font-size: 1.05rem;
+	overflow-wrap: anywhere;
+}
+.cd-acct__domains ul {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.4rem;
+	margin: 0.4rem 0 1rem;
+	padding: 0;
+	list-style: none;
+}
+.cd-acct__domains li {
+	padding: 0.15em 0.6em;
+	font-size: 0.82rem;
+	border: 1px solid var(--cd-line);
+}
+.cd-acct__more {
+	color: var(--cd-dim);
+	border-style: dashed;
+}
+.cd-acct__links {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 1rem;
+	margin: 0;
+	font-size: 0.8rem;
+}
+.cd-acct__links a::before {
+	content: "> ";
+}
+.cd-acct__note {
+	margin: 0.75rem 0 0;
+	padding: 0.4em 0.7em;
+	font-size: 0.75rem;
+	color: var(--wp--preset--color--warn, #ffb000);
+	border: 1px dashed var(--wp--preset--color--warn, #ffb000);
+}
+.cd-acct.is-layout-line {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.25rem 1.25rem;
+	margin: 0;
+	font-size: 0.85rem;
+}
+.cd-acct.is-layout-line .cd-acct__id {
+	color: var(--cd-primary);
+}
+.cd-acct.is-layout-line .cd-acct__k {
+	font-size: 0.68rem;
+}

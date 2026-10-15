@@ -25,6 +25,8 @@ require_once get_theme_file_path( 'inc/objkt/client.php' );
 require_once get_theme_file_path( 'inc/mederu/provider.php' );
 require_once get_theme_file_path( 'inc/gallery/collect.php' );
 require_once get_theme_file_path( 'inc/generative.php' );
+require_once get_theme_file_path( 'inc/account/client.php' );
+require_once get_theme_file_path( 'inc/account/render.php' );
 
 function cyberdeck_register_custom_blocks() {
 	// 1. No-build blocks.

@@ -65,7 +65,7 @@ function cyberdeck_tezos_sanitize_settings( $input ) {
 	$input = is_array( $input ) ? $input : array();
 	$out   = array();
 
-	foreach ( array( 'teia_endpoint', 'teia_endpoint_fallback', 'objkt_endpoint', 'custom_gateway' ) as $key ) {
+	foreach ( array( 'teia_endpoint', 'teia_endpoint_fallback', 'objkt_endpoint', 'tzkt_endpoint', 'tzstats_endpoint', 'custom_gateway' ) as $key ) {
 		$out[ $key ] = isset( $input[ $key ] ) ? esc_url_raw( trim( (string) $input[ $key ] ), array( 'https' ) ) : '';
 	}
 
@@ -153,6 +153,14 @@ function cyberdeck_tezos_settings_page() {
 				cyberdeck_tezos_settings_row( 'objkt_endpoint', 'objkt API endpoint', defined( 'CYBERDECK_OBJKT_DEFAULT_ENDPOINT' ) ? CYBERDECK_OBJKT_DEFAULT_ENDPOINT : '', 'The objkt and Mederu blocks (and price/listing lookups for every block) read objkt\'s public GraphQL API.' );
 cyberdeck_tezos_settings_textarea( 'mederu_contracts', 'Mederu contracts', 'KT1…', 'Optional, one per line. Every collection created in Mederu deploys its own contract, so list the ones you want counted as native (yours, and the Studio contract). Leave empty to detect the "Studio Mederu" collection on objkt automatically; the block\'s Check connection button shows what it found.' );
 				cyberdeck_tezos_settings_textarea( 'objkt_native_contracts', 'objkt native collections', 'KT1…', 'Optional. objkt is an open marketplace with no single native contract; list collections created through objkt if you want the objkt block\'s "native" scope to mean those.' );
+				?>
+			</table>
+
+			<h2>Tezos Account block</h2>
+			<table class="form-table" role="presentation">
+				<?php
+				cyberdeck_tezos_settings_row( 'tzkt_endpoint', 'TzKT API', 'https://api.tzkt.io', 'Default source for balance, activity and token counts.' );
+				cyberdeck_tezos_settings_row( 'tzstats_endpoint', 'TzStats API', 'https://api.tzstats.com', 'Optional alternative source. Its free API is documented for non-commercial use; check its terms for your site.' );
 				?>
 			</table>
 

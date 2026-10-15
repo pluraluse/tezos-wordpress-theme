@@ -44,6 +44,9 @@ The header is sticky. To turn that off, remove `.cd-site-header` from the header
 - **Mederu Profile** (`cyberdeck/mederu-profile`): same layouts plus a single-column feed. Accepts several accounts
   at once, can show only works minted on Mederu (set the Studio contract under Settings), and can show material
   credits. Data comes from objkt's public API.
+- **Tezos Account** (`cyberdeck/tezos-account`): public stats for a tz1/KT1 address or .tez name: balance, transactions, first/last
+  activity, tokens held, delegate, and Tezos Domains names (primary name plus owned domains). Stats come from TzKT by default
+  or TzStats; layouts: card, stat tiles, one line. Each source fails independently.
 - **Generative Canvas** (`cyberdeck/generative`, in the Design category): live, seeded generative art behind your content, or
   a fixed backdrop for the whole site. Five built-in sketches (flow field, constellation, Truchet tiles, wave lines, glitch
   grid), colors from the theme, pauses off-screen, still image for reduced motion. It can also run **one of your own minted

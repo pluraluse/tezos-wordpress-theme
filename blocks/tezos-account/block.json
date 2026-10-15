@@ -1,0 +1,37 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "cyberdeck/tezos-account",
+	"version": "0.1.0",
+	"title": "Tezos Account",
+	"category": "cyberdeck-web3",
+	"icon": "id-alt",
+	"description": "Show a Tezos account's public stats (from TzKT or TzStats) and its Tezos Domains names: balance, activity, tokens held, delegate and owned .tez domains.",
+	"keywords": ["tezos", "tzstats", "tzkt", "tezos domains", ".tez", "account", "wallet", "stats", "profile"],
+	"textdomain": "cyberdeck",
+	"attributes": {
+		"address": { "type": "string", "default": "" },
+		"layout": { "type": "string", "enum": ["card", "stats", "line"], "default": "card" },
+		"statsSource": { "type": "string", "enum": ["tzkt", "tzstats", "none"], "default": "tzkt" },
+		"showName": { "type": "boolean", "default": true },
+		"showBalance": { "type": "boolean", "default": true },
+		"showActivity": { "type": "boolean", "default": true },
+		"showDelegate": { "type": "boolean", "default": false },
+		"showTokens": { "type": "boolean", "default": true },
+		"showDomains": { "type": "boolean", "default": true },
+		"domainsLimit": { "type": "number", "default": 12 },
+		"showLinks": { "type": "boolean", "default": true },
+		"cacheMinutes": { "type": "number", "default": 15 }
+	},
+	"supports": {
+		"html": false,
+		"anchor": true,
+		"align": ["wide", "full"],
+		"color": { "background": true, "text": true },
+		"spacing": { "margin": true, "padding": true },
+		"typography": { "fontSize": true }
+	},
+	"render": "file:./render.php",
+	"editorScript": "file:./index.js",
+	"style": "cyberdeck-account"
+}

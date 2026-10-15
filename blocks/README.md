@@ -6,6 +6,7 @@
 | `cyberdeck/mederu-profile` | built |
 | `cyberdeck/objkt-profile` | built |
 | `cyberdeck/generative` | built |
+| `cyberdeck/tezos-account` | built |
 
 Category for all of them: `cyberdeck-web3` ("Cyberdeck: Tezos / Web3" in the inserter).
 
@@ -106,3 +107,11 @@ Per Mederu's docs, collecting a Mederu work happens on objkt's marketplace (Mede
 so the Mederu block's Collect buys from objkt Marketplace v4 like the objkt block. Free-mint pages (`mederu.art/free-mint/<slug>`,
 gas paid by Mederu) and Gacha drops (`gacha.mederu.art`, random mint) run on Mederu's own backend and contracts, so the Mederu
 block links to them with an optional button (host-checked) instead.
+
+## Tezos Account block
+
+`inc/account/` (data + markup), `blocks/tezos-account/`, `assets/account/account.css`. Sources: TzKT `/v1/accounts/<address>` (default),
+TzStats `/explorer/account/<address>` (optional; its free API is documented for non-commercial use), and the Tezos Domains GraphQL
+API (primary reverse-record name + `domains(where: {owner: {equalTo: ...}})`, with fallbacks if a query option is rejected).
+Endpoints for TzKT/TzStats are set under Settings > Tezos blocks. Only public chain data is read; results are cached and a stale
+copy is served if a service is down. Source failures are shown to editors only.
