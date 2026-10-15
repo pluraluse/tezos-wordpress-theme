@@ -1,23 +1,21 @@
 {
 	"$schema": "https://schemas.wp.org/trunk/block.json",
 	"apiVersion": 3,
-	"name": "cyberdeck/mederu-profile",
+	"name": "cyberdeck/teia-profile",
 	"version": "0.1.0",
-	"title": "Mederu Profile",
+	"title": "Teia Profile",
 	"category": "cyberdeck-web3",
-	"icon": "art",
-	"description": "Show works from mederu.art artists (or collectors) as a grid, masonry, marquee, carousel, list, feed or single piece. Works can be one or many accounts, only those minted on Mederu, with material credits. Video, audio, GIF, 3D (GLB) and interactive works load only when clicked.",
+	"icon": "format-gallery",
+	"description": "Show an artist's Teia works (or a collector's holdings) as a grid, masonry, marquee, carousel, list or single piece. Video, audio, GIF, 3D (GLB) and interactive works load only when clicked.",
 	"keywords": [
-		"mederu",
+		"teia",
 		"tezos",
 		"nft",
-		"gacha",
-		"atelier",
+		"hic et nunc",
 		"artist",
 		"gallery",
 		"glb",
-		"marquee",
-		"objkt"
+		"marquee"
 	],
 	"textdomain": "cyberdeck",
 	"attributes": {
@@ -29,7 +27,6 @@
 			"type": "string",
 			"enum": [
 				"created",
-				"studio",
 				"collected"
 			],
 			"default": "created"
@@ -47,7 +44,7 @@
 				"feed",
 				"single"
 			],
-			"default": "feed"
+			"default": "grid"
 		},
 		"limit": {
 			"type": "number",
@@ -166,7 +163,9 @@
 			"type": "string",
 			"enum": [
 				"left",
-				"right"
+				"right",
+				"up",
+				"down"
 			],
 			"default": "left"
 		},
@@ -174,19 +173,7 @@
 			"type": "boolean",
 			"default": true
 		},
-		"showCredits": {
-			"type": "boolean",
-			"default": false
-		},
-		"includeFlagged": {
-			"type": "boolean",
-			"default": false
-		},
 		"allowCollect": {
-			"type": "boolean",
-			"default": false
-		},
-		"showPrice": {
 			"type": "boolean",
 			"default": false
 		},
@@ -214,13 +201,9 @@
 			"type": "string",
 			"default": ""
 		},
-		"dropUrl": {
-			"type": "string",
-			"default": ""
-		},
-		"dropLabel": {
-			"type": "string",
-			"default": ""
+		"visible": {
+			"type": "number",
+			"default": 0
 		}
 	},
 	"supports": {

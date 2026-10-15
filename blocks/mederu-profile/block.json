@@ -1,23 +1,23 @@
 {
 	"$schema": "https://schemas.wp.org/trunk/block.json",
 	"apiVersion": 3,
-	"name": "cyberdeck/objkt-profile",
+	"name": "cyberdeck/mederu-profile",
 	"version": "0.1.0",
-	"title": "objkt Profile",
+	"title": "Mederu Profile",
 	"category": "cyberdeck-web3",
-	"icon": "images-alt2",
-	"description": "Show works from objkt.com: an artist's creations, a collector's holdings, or a whole collection. Shows objkt's lowest listing price and, when enabled, lets visitors collect fixed-price listings with their wallet. Video, audio, GIF, 3D (GLB) and interactive works load only when clicked.",
+	"icon": "art",
+	"description": "Show works from mederu.art artists (or collectors) as a grid, masonry, marquee, carousel, list, feed or single piece. Works can be one or many accounts, only those minted on Mederu, with material credits. Video, audio, GIF, 3D (GLB) and interactive works load only when clicked.",
 	"keywords": [
-		"objkt",
+		"mederu",
 		"tezos",
 		"nft",
-		"marketplace",
-		"collection",
+		"gacha",
+		"atelier",
 		"artist",
 		"gallery",
 		"glb",
-		"collect",
-		"price"
+		"marquee",
+		"objkt"
 	],
 	"textdomain": "cyberdeck",
 	"attributes": {
@@ -29,8 +29,8 @@
 			"type": "string",
 			"enum": [
 				"created",
-				"collected",
-				"collection"
+				"studio",
+				"collected"
 			],
 			"default": "created"
 		},
@@ -47,7 +47,7 @@
 				"feed",
 				"single"
 			],
-			"default": "grid"
+			"default": "feed"
 		},
 		"limit": {
 			"type": "number",
@@ -166,7 +166,9 @@
 			"type": "string",
 			"enum": [
 				"left",
-				"right"
+				"right",
+				"up",
+				"down"
 			],
 			"default": "left"
 		},
@@ -213,6 +215,18 @@
 		"works": {
 			"type": "string",
 			"default": ""
+		},
+		"dropUrl": {
+			"type": "string",
+			"default": ""
+		},
+		"dropLabel": {
+			"type": "string",
+			"default": ""
+		},
+		"visible": {
+			"type": "number",
+			"default": 0
 		}
 	},
 	"supports": {

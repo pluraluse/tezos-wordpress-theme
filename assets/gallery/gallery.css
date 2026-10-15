@@ -844,3 +844,86 @@
 .cd-gallery .gx-drop__link:hover {
 	background: var(--gx-primary);
 }
+
+/* ---------- Marquee / carousel: items visible at once + vertical scrolling ---------- */
+
+/* Marquee sized by how many are in view (instead of by height). */
+.cd-gallery.is-layout-marquee.has-visible .gx-viewport {
+	container-type: inline-size;
+}
+.cd-gallery.is-layout-marquee.has-visible:not(.is-dir-vertical) .gx-item {
+	width: calc((100cqw - (var(--gx-visible) - 1) * var(--gx-gap)) / var(--gx-visible));
+}
+.cd-gallery.is-layout-marquee.has-visible:not(.is-dir-vertical) .gx-stage {
+	height: auto;
+	aspect-ratio: var(--gx-aspect);
+}
+.cd-gallery.is-layout-marquee.has-visible:not(.is-dir-vertical) .gx-stage.is-active {
+	width: auto;
+}
+.cd-gallery.is-layout-marquee.has-visible:not(.is-dir-vertical) .gx-poster {
+	width: 100%;
+	height: auto;
+}
+.cd-gallery.is-layout-marquee.has-visible.has-fixed-aspect:not(.is-dir-vertical) .gx-poster {
+	height: 100%;
+}
+.cd-gallery.is-layout-marquee.has-visible:not(.is-dir-vertical) .gx-caption {
+	max-width: none;
+}
+
+/* Vertical: a single column that scrolls up or down. */
+.cd-gallery.is-dir-vertical .gx-items {
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+	max-width: 720px;
+	margin-inline: auto;
+	gap: var(--gx-gap);
+}
+.cd-gallery.is-dir-vertical .gx-item {
+	width: 100%;
+	flex: 0 0 auto;
+}
+.cd-gallery.is-dir-vertical .gx-stage {
+	height: auto;
+	aspect-ratio: var(--gx-aspect);
+}
+.cd-gallery.is-dir-vertical .gx-poster {
+	width: 100%;
+	height: auto;
+}
+.cd-gallery.is-dir-vertical.has-fixed-aspect .gx-poster {
+	height: 100%;
+}
+.cd-gallery.is-dir-vertical .gx-stage.is-active {
+	width: auto;
+}
+.cd-gallery.is-layout-marquee.is-dir-vertical .gx-viewport {
+	max-height: 80vh;
+	overflow-y: auto;
+}
+.cd-gallery.is-layout-marquee.is-marquee-ready.is-dir-vertical .gx-viewport {
+	overflow: hidden;
+	max-height: none;
+}
+.cd-gallery.is-marquee-ready.is-dir-vertical .gx-items {
+	padding-right: 0;
+	padding-bottom: var(--gx-gap);
+	animation-name: gx-marquee-y;
+}
+.cd-gallery.is-layout-carousel.is-dir-vertical .gx-items {
+	overflow-x: hidden;
+	overflow-y: auto;
+	scroll-snap-type: y mandatory;
+	max-height: 80vh;
+}
+.cd-gallery.is-layout-carousel.is-dir-vertical .gx-item {
+	flex: 0 0 auto;
+	scroll-snap-align: start;
+}
+@keyframes gx-marquee-y {
+	to {
+		transform: translateY(-50%);
+	}
+}

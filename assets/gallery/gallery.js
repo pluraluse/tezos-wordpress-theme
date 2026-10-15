@@ -473,11 +473,57 @@
 
 	/* ---------- per-block setup ---------- */
 
+	/**
+	 * Vertical strips need an explicit height: exactly the first N items (plus gaps), re-measured as images load.
+	 *
+	 * @param {Element} root   Block root (data-visible = N).
+	 * @param {Element} holder Element to give the height to.
+	 * @param {Element} track  The .gx-items element.
+	 */
+	function fitVertical( root, holder, track ) {
+		var count = parseInt( root.dataset.visible, 10 ) || 3;
+		var items = Array.prototype.filter.call( track.children, function ( child ) {
+			return child.classList.contains( 'gx-item' ) && ! child.hasAttribute( 'aria-hidden' );
+		} );
+		if ( ! items.length ) {
+			return;
+		}
+		var n = Math.min( count, items.length );
+		var gap = parseFloat( window.getComputedStyle( track ).rowGap ) || 0;
+		var height = gap * ( n - 1 );
+		for ( var i = 0; i < n; i++ ) {
+			height += items[ i ].offsetHeight;
+		}
+		if ( height > 0 ) {
+			holder.style.height = Math.round( height ) + 'px';
+		}
+	}
+
+	function watchVertical( root, holder, track ) {
+		var refit = function () {
+			fitVertical( root, holder, track );
+		};
+		refit();
+		track.querySelectorAll( 'img' ).forEach( function ( img ) {
+			if ( ! img.complete ) {
+				img.addEventListener( 'load', refit, { once: true } );
+			}
+		} );
+		window.addEventListener( 'resize', refit );
+		if ( 'ResizeObserver' in window ) {
+			new ResizeObserver( refit ).observe( root );
+		}
+	}
+
 	function initCarousel( root ) {
 		var nav = root.querySelector( '.gx-nav' );
 		var track = root.querySelector( '.gx-items' );
 		if ( ! nav || ! track ) {
 			return;
+		}
+		var vertical = root.classList.contains( 'is-dir-vertical' );
+		if ( vertical ) {
+			watchVertical( root, track, track );
 		}
 		nav.hidden = false;
 		nav.addEventListener( 'click', function ( event ) {
@@ -486,14 +532,29 @@
 				return;
 			}
 			var direction = button.classList.contains( 'gx-next' ) ? 1 : -1;
-			track.scrollBy( { left: direction * track.clientWidth * 0.9, behavior: reduceMotion.matches ? 'auto' : 'smooth' } );
+			var behavior = reduceMotion.matches ? 'auto' : 'smooth';
+			if ( vertical ) {
+				track.scrollBy( { top: direction * track.clientHeight * 0.9, behavior: behavior } );
+			} else {
+				track.scrollBy( { left: direction * track.clientWidth * 0.9, behavior: behavior } );
+			}
 		} );
 	}
 
 	function initMarquee( root ) {
 		var track = root.querySelector( '.gx-items' );
+		var viewport = root.querySelector( '.gx-viewport' );
+		var vertical = root.classList.contains( 'is-dir-vertical' );
 		if ( ! track || track.children.length < 2 || reduceMotion.matches ) {
+			if ( track && vertical ) {
+				watchVertical( root, viewport, track ); // still a tidy, scrollable column
+			}
 			return; // stays a normal, scrollable strip
+		}
+
+		// Measure the visible window before duplicating the items.
+		if ( vertical ) {
+			watchVertical( root, viewport, track );
 		}
 
 		Array.prototype.slice.call( track.children ).forEach( function ( child ) {
@@ -508,11 +569,12 @@
 		track.removeAttribute( 'tabindex' );
 		track.removeAttribute( 'role' );
 		root.classList.add( 'is-marquee-ready' );
-		root.classList.toggle( 'is-reverse', root.dataset.direction === 'right' );
+		// left/up = default motion; right/down = reversed.
+		root.classList.toggle( 'is-reverse', root.dataset.direction === 'right' || root.dataset.direction === 'down' );
 
 		var speed = parseInt( root.dataset.speed, 10 ) || 40;
 		var setDuration = function () {
-			var distance = track.scrollWidth / 2;
+			var distance = ( vertical ? track.scrollHeight : track.scrollWidth ) / 2;
 			if ( distance > 0 ) {
 				track.style.setProperty( '--gx-duration', Math.max( 8, distance / speed ) + 's' );
 			}

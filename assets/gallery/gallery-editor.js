@@ -243,12 +243,26 @@
 				} ),
 				[ 'grid', 'masonry', 'mosaic', 'carousel' ].indexOf( layout ) > -1
 					? el( c.RangeControl, {
-							label: 'Columns',
+							label: layout === 'carousel' ? 'Items visible at once' : 'Columns',
 							value: attributes.columns,
 							min: 1,
 							max: 10,
 							onChange: function ( v ) {
 								set( { columns: v } );
+							},
+							__nextHasNoMarginBottom: true,
+					  } )
+					: null,
+				layout === 'carousel'
+					? el( c.SelectControl, {
+							label: 'Scroll direction',
+							value: attributes.direction === 'up' || attributes.direction === 'down' ? 'up' : 'left',
+							options: options( [
+								[ 'left', 'Horizontal (sideways)' ],
+								[ 'up', 'Vertical (up and down)' ],
+							] ),
+							onChange: function ( v ) {
+								set( { direction: v } );
 							},
 							__nextHasNoMarginBottom: true,
 					  } )
@@ -279,15 +293,28 @@
 							Fragment,
 							null,
 							el( c.RangeControl, {
-								label: 'Item height (px)',
-								value: attributes.itemSize,
-								min: 80,
-								max: 600,
+								label: 'Items visible at once',
+								value: attributes.visible,
+								min: 0,
+								max: 12,
 								onChange: function ( v ) {
-									set( { itemSize: v } );
+									set( { visible: v } );
 								},
+								help: '0 = size the strip by item height instead.',
 								__nextHasNoMarginBottom: true,
 							} ),
+							attributes.visible === 0
+								? el( c.RangeControl, {
+										label: 'Item height (px)',
+										value: attributes.itemSize,
+										min: 80,
+										max: 600,
+										onChange: function ( v ) {
+											set( { itemSize: v } );
+										},
+										__nextHasNoMarginBottom: true,
+								  } )
+								: null,
 							el( c.RangeControl, {
 								label: 'Speed (px per second)',
 								value: attributes.speed,
@@ -302,8 +329,10 @@
 								label: 'Direction',
 								value: attributes.direction,
 								options: options( [
-									[ 'left', 'Right to left' ],
-									[ 'right', 'Left to right' ],
+									[ 'left', 'Left (moves right to left)' ],
+									[ 'right', 'Right (moves left to right)' ],
+									[ 'up', 'Up (moves bottom to top)' ],
+									[ 'down', 'Down (moves top to bottom)' ],
 								] ),
 								onChange: function ( v ) {
 									set( { direction: v } );

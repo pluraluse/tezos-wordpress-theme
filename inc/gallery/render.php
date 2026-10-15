@@ -102,7 +102,8 @@ function cyberdeck_gallery_clean_attributes( array $a, array $provider ) {
 		'speed'        => max( 5, min( 400, (int) ( $a['speed'] ?? 40 ) ) ),
 		'interval'     => max( 2, min( 20, (int) ( $a['interval'] ?? 5 ) ) ),
 		'tilt'         => ! empty( $a['tilt'] ),
-		'direction'    => $pick( $a['direction'] ?? '', array( 'left', 'right' ), 'left' ),
+		'direction'    => $pick( $a['direction'] ?? '', array( 'left', 'right', 'up', 'down' ), 'left' ),
+		'visible'      => max( 0, min( 12, (int) ( $a['visible'] ?? 0 ) ) ),
 		'pauseOnHover' => ! isset( $a['pauseOnHover'] ) || (bool) $a['pauseOnHover'],
 	);
 }
@@ -253,16 +254,23 @@ function cyberdeck_gallery_render( array $raw_attributes, array $provider ) {
 		}
 	);
 
+	$vertical = in_array( $a['layout'], array( 'marquee', 'carousel' ), true ) && in_array( $a['direction'], array( 'up', 'down' ), true );
+	// How many items are in view at once: marquee has its own setting (0 = size by height), carousel uses columns.
+	$visible  = 'carousel' === $a['layout'] ? $a['columns'] : $a['visible'];
+
 	$classes = array(
 		'cd-gallery',
 		'is-provider-' . $provider['slug'],
 		'is-layout-' . $a['layout'],
+		$vertical ? 'is-dir-vertical' : '',
+		( 'marquee' === $a['layout'] && $a['visible'] > 0 ) ? 'has-visible' : '',
 		'auto' === $a['aspect'] ? 'has-auto-aspect' : 'has-fixed-aspect',
 	);
 
 	$style = sprintf(
-		'--gx-cols:%d;--gx-gap:%dpx;--gx-aspect:%s;--gx-fit:%s;--gx-item-size:%dpx;',
+		'--gx-cols:%d;--gx-visible:%d;--gx-gap:%dpx;--gx-aspect:%s;--gx-fit:%s;--gx-item-size:%dpx;',
 		$a['columns'],
+		max( 1, $visible ),
 		$a['gap'],
 		'auto' === $a['aspect'] ? 'auto' : str_replace( '/', ' / ', $a['aspect'] ),
 		$a['fit'],
@@ -275,6 +283,7 @@ function cyberdeck_gallery_render( array $raw_attributes, array $provider ) {
 		'data-max-active'     => (string) $a['maxActive'],
 		'data-speed'          => (string) $a['speed'],
 		'data-direction'      => $a['direction'],
+		'data-visible'        => (string) max( 1, $visible ),
 		'data-interval'       => (string) $a['interval'],
 		'data-tilt'           => $a['tilt'] ? '1' : '0',
 		'data-pause'          => $a['pauseOnHover'] ? '1' : '0',
@@ -294,7 +303,7 @@ function cyberdeck_gallery_render( array $raw_attributes, array $provider ) {
 		$data['data-viewer'] = get_theme_file_uri( 'assets/vendor/model-viewer/model-viewer.min.js' );
 	}
 
-	$wrapper = get_block_wrapper_attributes( array_merge( array( 'class' => implode( ' ', $classes ), 'style' => $style ), $data ) );
+	$wrapper = get_block_wrapper_attributes( array_merge( array( 'class' => implode( ' ', array_filter( $classes ) ), 'style' => $style ), $data ) );
 
 	$html  = '<div ' . $wrapper . '>';
 	$html .= $a['showProfile'] ? cyberdeck_gallery_render_profile( $a, $provider, $addresses ) : '';

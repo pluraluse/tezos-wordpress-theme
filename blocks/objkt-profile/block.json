@@ -1,21 +1,23 @@
 {
 	"$schema": "https://schemas.wp.org/trunk/block.json",
 	"apiVersion": 3,
-	"name": "cyberdeck/teia-profile",
+	"name": "cyberdeck/objkt-profile",
 	"version": "0.1.0",
-	"title": "Teia Profile",
+	"title": "objkt Profile",
 	"category": "cyberdeck-web3",
-	"icon": "format-gallery",
-	"description": "Show an artist's Teia works (or a collector's holdings) as a grid, masonry, marquee, carousel, list or single piece. Video, audio, GIF, 3D (GLB) and interactive works load only when clicked.",
+	"icon": "images-alt2",
+	"description": "Show works from objkt.com: an artist's creations, a collector's holdings, or a whole collection. Shows objkt's lowest listing price and, when enabled, lets visitors collect fixed-price listings with their wallet. Video, audio, GIF, 3D (GLB) and interactive works load only when clicked.",
 	"keywords": [
-		"teia",
+		"objkt",
 		"tezos",
 		"nft",
-		"hic et nunc",
+		"marketplace",
+		"collection",
 		"artist",
 		"gallery",
 		"glb",
-		"marquee"
+		"collect",
+		"price"
 	],
 	"textdomain": "cyberdeck",
 	"attributes": {
@@ -27,7 +29,8 @@
 			"type": "string",
 			"enum": [
 				"created",
-				"collected"
+				"collected",
+				"collection"
 			],
 			"default": "created"
 		},
@@ -163,7 +166,9 @@
 			"type": "string",
 			"enum": [
 				"left",
-				"right"
+				"right",
+				"up",
+				"down"
 			],
 			"default": "left"
 		},
@@ -171,7 +176,19 @@
 			"type": "boolean",
 			"default": true
 		},
+		"showCredits": {
+			"type": "boolean",
+			"default": false
+		},
+		"includeFlagged": {
+			"type": "boolean",
+			"default": false
+		},
 		"allowCollect": {
+			"type": "boolean",
+			"default": false
+		},
+		"showPrice": {
 			"type": "boolean",
 			"default": false
 		},
@@ -198,6 +215,10 @@
 		"works": {
 			"type": "string",
 			"default": ""
+		},
+		"visible": {
+			"type": "number",
+			"default": 0
 		}
 	},
 	"supports": {
