@@ -151,7 +151,7 @@ function cyberdeck_tezos_settings_page() {
 			<table class="form-table" role="presentation">
 				<?php
 				cyberdeck_tezos_settings_row( 'objkt_endpoint', 'objkt API endpoint', defined( 'CYBERDECK_OBJKT_DEFAULT_ENDPOINT' ) ? CYBERDECK_OBJKT_DEFAULT_ENDPOINT : '', 'The objkt and Mederu blocks (and price/listing lookups for every block) read objkt\'s public GraphQL API.' );
-cyberdeck_tezos_settings_textarea( 'mederu_contracts', 'Mederu contracts', 'KT1…', 'Mederu\'s own FA2 contracts, one per line (Studio, and any gacha or free-mint contracts). The Mederu block\'s "native" scope shows only works minted on these. Find an address on any Mederu-minted token\'s objkt page.' );
+cyberdeck_tezos_settings_textarea( 'mederu_contracts', 'Mederu contracts', 'KT1…', 'Optional, one per line. Every collection created in Mederu deploys its own contract, so list the ones you want counted as native (yours, and the Studio contract). Leave empty to detect the "Studio Mederu" collection on objkt automatically; the block\'s Check connection button shows what it found.' );
 				cyberdeck_tezos_settings_textarea( 'objkt_native_contracts', 'objkt native collections', 'KT1…', 'Optional. objkt is an open marketplace with no single native contract; list collections created through objkt if you want the objkt block\'s "native" scope to mean those.' );
 				?>
 			</table>

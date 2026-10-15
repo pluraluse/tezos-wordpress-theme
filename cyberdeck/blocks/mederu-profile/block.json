@@ -213,6 +213,14 @@
 		"works": {
 			"type": "string",
 			"default": ""
+		},
+		"dropUrl": {
+			"type": "string",
+			"default": ""
+		},
+		"dropLabel": {
+			"type": "string",
+			"default": ""
 		}
 	},
 	"supports": {

@@ -15,14 +15,66 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Mederu's own FA2 contract(s): Studio mints, and any gacha / free-mint contracts the admin adds
- * (Settings > Tezos blocks). The older single "Studio contract" setting still works.
+ * Mederu's native contracts.
  *
+ * Mederu mints through a "Studio" FA2 contract, and every collection an artist creates in Mederu deploys its own FA2
+ * contract. There is no single address, so:
+ *  1. contracts listed under Settings > Tezos blocks win (add your own collections there), otherwise
+ *  2. the Studio contract is detected on objkt by its collection name ("Studio Mederu"; filter
+ *     `cyberdeck_mederu_name_patterns`).
+ *
+ * @return array{contracts:string[],source:string,detected:array}
+ */
+function cyberdeck_mederu_contracts_info() {
+	$list = (string) cyberdeck_tezos_option( 'mederu_contracts', '' ) . ' ' . (string) cyberdeck_tezos_option( 'mederu_studio_contract', '' );
+	$set  = cyberdeck_gallery_parse_contracts( $list );
+	if ( $set ) {
+		return array( 'contracts' => $set, 'source' => 'settings', 'detected' => array() );
+	}
+
+	$patterns = apply_filters( 'cyberdeck_mederu_name_patterns', array( 'studio mederu' ) );
+	$found    = array_slice( cyberdeck_objkt_find_collections( (array) $patterns ), 0, 5 );
+	return array(
+		'contracts' => wp_list_pluck( $found, 'contract' ),
+		'source'    => $found ? 'detected' : 'none',
+		'detected'  => $found,
+	);
+}
+
+/**
  * @return string[]
  */
 function cyberdeck_mederu_contracts() {
-	$list = (string) cyberdeck_tezos_option( 'mederu_contracts', '' ) . ' ' . (string) cyberdeck_tezos_option( 'mederu_studio_contract', '' );
-	return cyberdeck_gallery_parse_contracts( $list );
+	return cyberdeck_mederu_contracts_info()['contracts'];
+}
+
+/**
+ * Link-out button for Mederu's own sales mechanisms that cannot run on another site:
+ * free-mint pages (gas paid by Mederu) and gacha drops (random mint). Only mederu.art hosts are accepted.
+ *
+ * @param array $a Clean attributes.
+ * @return string
+ */
+function cyberdeck_mederu_drop_button( array $a ) {
+	$url = esc_url_raw( (string) ( $a['dropUrl'] ?? '' ), array( 'https' ) );
+	if ( '' === $url ) {
+		return '';
+	}
+	$host = strtolower( (string) wp_parse_url( $url, PHP_URL_HOST ) );
+	if ( ! in_array( $host, array( 'mederu.art', 'www.mederu.art', 'gacha.mederu.art' ), true ) ) {
+		return '';
+	}
+	$path  = (string) wp_parse_url( $url, PHP_URL_PATH );
+	$label = 'Open on mederu';
+	if ( 'gacha.mederu.art' === $host ) {
+		$label = 'Mint from the gacha';
+	} elseif ( 0 === strpos( $path, '/free-mint/' ) ) {
+		$label = 'Claim the free mint';
+	}
+	if ( '' !== (string) ( $a['dropLabel'] ?? '' ) ) {
+		$label = (string) $a['dropLabel'];
+	}
+	return '<p class="gx-drop"><a class="gx-drop__link" href="' . esc_url( $url ) . '" target="_blank" rel="noopener noreferrer">' . esc_html( $label ) . '</a></p>';
 }
 
 /**
@@ -36,7 +88,8 @@ function cyberdeck_mederu_provider() {
 		'multi'      => true,
 		'default_contract' => '',
 		'native'     => 'cyberdeck_mederu_contracts',
-		'native_required' => 'Mederu\'s own contracts are not set. Add them under Settings > Tezos blocks, or choose "Any contract" in the block.',
+		'native_required' => 'Could not identify Mederu\'s contracts automatically. Add them under Settings > Tezos blocks (or in the block, "Only these contracts"), or choose "Any contract".',
+		'extra'      => 'cyberdeck_mederu_drop_button',
 		'resolve'    => 'cyberdeck_objkt_resolve_accounts',
 		'fetch'      => static function ( array $a, array $addresses, $fetch ) {
 			return cyberdeck_objkt_fetch_works(
@@ -76,9 +129,11 @@ function cyberdeck_mederu_provider() {
 		},
 		'diagnose'   => static function ( $address = '' ) {
 			$report = cyberdeck_objkt_diagnose( $address );
-			if ( ! cyberdeck_mederu_contracts() ) {
-				$report['message'] .= ' Mederu contracts are not set, so "Native to Mederu" has nothing to match.';
-			}
+			$info             = cyberdeck_mederu_contracts_info();
+			$report['native'] = $info;
+			$report['message'] .= $info['contracts']
+				? ' Native to Mederu = ' . count( $info['contracts'] ) . ' contract(s) (' . $info['source'] . ').'
+				: ' No Mederu contracts could be identified; list them in Settings.';
 			return $report;
 		},
 	);

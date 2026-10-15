@@ -86,7 +86,9 @@ Shared by all gallery blocks (`inc/gallery/scope.php`):
 
 - `scope`: `native` (default) or `any`. Native = the provider's own contracts (`native` callable in the provider array):
   Teia returns the Hic et Nunc/Teia OBJKT contract; Mederu returns the contracts in Settings (`mederu_contracts`, and the older
-  `mederu_studio_contract`); objkt returns the optional list in Settings (`objkt_native_contracts`), because objkt is an open
+  `mederu_studio_contract`) or, when none are set, detects the "Studio Mederu" collection on objkt by name (filter
+  `cyberdeck_mederu_name_patterns`). Every collection created in Mederu deploys its own contract, so add your own collections
+  to the list; objkt returns the optional list in Settings (`objkt_native_contracts`), because objkt is an open
   marketplace with no single native contract.
 - `contracts`: one or more KT1 addresses (up to 10). Overrides `scope`.
 - `works`: exact works, one per line, shown in that order. Accepts `KT1…:id`, `KT1…/id`, objkt and teia.art links, and a bare id
@@ -97,3 +99,10 @@ Shared by all gallery blocks (`inc/gallery/scope.php`):
 `source: minted` picks one of an account's interactive (HTML/generative) tokens through the same provider code, then shows its
 poster and, only while visible and when motion is allowed, runs it in a sandboxed iframe. Exactly one live work per page is
 allowed; others stay as posters. If nothing can be resolved, visitors see the built-in sketch and editors see why.
+
+## Mederu's own sales mechanisms
+
+Per Mederu's docs, collecting a Mederu work happens on objkt's marketplace (Mederu's in-app buy button is still on its roadmap),
+so the Mederu block's Collect buys from objkt Marketplace v4 like the objkt block. Free-mint pages (`mederu.art/free-mint/<slug>`,
+gas paid by Mederu) and Gacha drops (`gacha.mederu.art`, random mint) run on Mederu's own backend and contracts, so the Mederu
+block links to them with an optional button (host-checked) instead.

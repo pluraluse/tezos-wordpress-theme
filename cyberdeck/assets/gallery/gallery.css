@@ -828,3 +828,19 @@
 .cd-gallery[data-tilt="1"] .gx-stage:not(.is-active):hover::after {
 	opacity: 1;
 }
+
+.cd-gallery .gx-drop {
+	margin: 0 0 calc(var(--gx-gap) * 1.2);
+}
+.cd-gallery .gx-drop__link {
+	display: inline-block;
+	padding: 0.7em 1.3em;
+	font-weight: 700;
+	text-decoration: none;
+	color: var(--gx-void);
+	background: var(--gx-secondary);
+	box-shadow: 0 0 16px color-mix(in srgb, var(--gx-secondary) 40%, transparent);
+}
+.cd-gallery .gx-drop__link:hover {
+	background: var(--gx-primary);
+}

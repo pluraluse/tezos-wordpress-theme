@@ -456,6 +456,42 @@ function cyberdeck_objkt_diagnose( $address = '' ) {
 }
 
 /**
+ * Find collection contracts on objkt whose name contains one of the given phrases (case-insensitive).
+ * Cached; returns [] when the API can't answer.
+ *
+ * @param string[] $phrases Name fragments.
+ * @return array<int,array{contract:string,name:string}>
+ */
+function cyberdeck_objkt_find_collections( array $phrases ) {
+	$found = array();
+	foreach ( $phrases as $phrase ) {
+		$phrase = trim( (string) $phrase );
+		if ( '' === $phrase || strlen( $phrase ) > 60 ) {
+			continue;
+		}
+		$key    = 'cd_objkt_fa_' . md5( strtolower( $phrase ) );
+		$cached = get_transient( $key );
+		if ( ! is_array( $cached ) ) {
+			$data   = cyberdeck_objkt_gql( sprintf( '{ fa(where: {name: {_ilike: %s}}, limit: 10) { contract name } }', wp_json_encode( '%' . $phrase . '%' ) ) );
+			$cached = array();
+			if ( ! is_wp_error( $data ) ) {
+				foreach ( (array) ( $data['fa'] ?? array() ) as $row ) {
+					$contract = (string) ( $row['contract'] ?? '' );
+					if ( cyberdeck_gallery_is_address( $contract ) ) {
+						$cached[] = array( 'contract' => $contract, 'name' => (string) ( $row['name'] ?? '' ) );
+					}
+				}
+			}
+			set_transient( $key, $cached, $cached ? 12 * HOUR_IN_SECONDS : HOUR_IN_SECONDS );
+		}
+		foreach ( $cached as $row ) {
+			$found[ $row['contract'] ] = $row;
+		}
+	}
+	return array_values( $found );
+}
+
+/**
  * Provider definition for the objkt block.
  *
  * @return array

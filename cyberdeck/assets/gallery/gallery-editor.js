@@ -119,6 +119,9 @@
 					check.fields_missing && check.fields_missing.length
 						? el( 'div', null, 'Indexer lacks: ', el( 'code', null, check.fields_missing.join( ', ' ) ) )
 						: null,
+					check.native && check.native.contracts && check.native.contracts.length
+						? el( 'div', null, 'Native contracts (' + check.native.source + '): ', el( 'code', null, check.native.contracts.join( ', ' ) ) )
+						: null,
 					check.endpoint ? el( 'div', null, 'Endpoint: ', el( 'code', null, check.endpoint ) ) : null
 			  )
 			: null;
@@ -446,6 +449,31 @@
 							},
 							__nextHasNoMarginBottom: true,
 					  } )
+					: null,
+				cfg.features && cfg.features.drop
+					? el(
+							Fragment,
+							null,
+							el( c.TextControl, {
+								label: 'Mederu free-mint or gacha link (optional)',
+								help: 'A mederu.art/free-mint/\u2026 or gacha.mederu.art link. Shown as a button; these mints run on Mederu\u2019s own site (free mints are gas-sponsored, gacha is a random mint), so they link out.',
+								value: attributes.dropUrl,
+								onChange: function ( v ) {
+									set( { dropUrl: v.trim() } );
+								},
+								__nextHasNoMarginBottom: true,
+							} ),
+							attributes.dropUrl
+								? el( c.TextControl, {
+										label: 'Button text (optional)',
+										value: attributes.dropLabel,
+										onChange: function ( v ) {
+											set( { dropLabel: v } );
+										},
+										__nextHasNoMarginBottom: true,
+								  } )
+								: null
+					  )
 					: null,
 				cfg.features && cfg.features.flagged
 					? el( c.ToggleControl, {

@@ -13,9 +13,9 @@ window.cyberdeckGallery.register( {
 		[ 'collected', 'Works collected by these accounts' ],
 	],
 	nativeLabel: 'Only works minted on Mederu',
-	nativeHelp: 'Uses the Mederu contracts you list under Settings > Tezos blocks.',
+	nativeHelp: 'Each Mederu collection has its own contract. This uses the contracts listed in Settings > Tezos blocks, or detects the Studio Mederu collection automatically. Add your own collections under "Only these contracts".',
 	worksHelp: 'an objkt link or KT1…:id',
 	worksPlaceholder: 'https://objkt.com/tokens/KT1…/45 or KT1…:45',
-	features: { credits: true, flagged: true, price: true, collect: true },
+	features: { credits: true, flagged: true, price: true, collect: true, drop: true },
 	collectHelp: 'Mederu purchases go through objkt, so this buys from objkt Marketplace v4 fixed-price listings (tez only).',
 } );

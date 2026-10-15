@@ -72,6 +72,8 @@ function cyberdeck_gallery_clean_attributes( array $a, array $provider ) {
 		'limit'        => max( 1, min( 60, (int) ( $a['limit'] ?? 12 ) ) ),
 		'order'        => $pick( $a['order'] ?? '', array( 'newest', 'oldest', 'random' ), 'newest' ),
 		'types'        => $types,
+		'dropUrl'      => isset( $a['dropUrl'] ) ? esc_url_raw( (string) $a['dropUrl'], array( 'https' ) ) : '',
+		'dropLabel'    => isset( $a['dropLabel'] ) ? sanitize_text_field( $a['dropLabel'] ) : '',
 		'scope'        => $pick( $a['scope'] ?? '', array( 'native', 'any' ), 'native' ),
 		'contracts'    => $contracts,
 		'works'        => $parsed['works'],
@@ -296,6 +298,9 @@ function cyberdeck_gallery_render( array $raw_attributes, array $provider ) {
 
 	$html  = '<div ' . $wrapper . '>';
 	$html .= $a['showProfile'] ? cyberdeck_gallery_render_profile( $a, $provider, $addresses ) : '';
+	if ( ! empty( $provider['extra'] ) ) {
+		$html .= (string) call_user_func( $provider['extra'], $a );
+	}
 	$html .= '<div class="gx-viewport"><div class="gx-items"' . ( in_array( $a['layout'], array( 'carousel', 'marquee' ), true ) ? ' tabindex="0" role="region" aria-label="Artworks"' : '' ) . '>';
 	foreach ( $items as $item ) {
 		$html .= cyberdeck_gallery_render_item( $item, $a, $provider );
